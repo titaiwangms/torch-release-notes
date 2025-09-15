@@ -25,15 +25,99 @@ The categories below are as follows:
 
 ## onnx
 ### bc breaking
-- [ONNX] Delete symbolic caffe2 ([#157102](https://github.com/pytorch/pytorch/pull/157102))
-- [ONNX] Delete torch.onnx.dynamo_export ([#158130](https://github.com/pytorch/pytorch/pull/158130))
-- [ONNX] Remove legacy Dort ([#158258](https://github.com/pytorch/pytorch/pull/158258))
-- [ONNX] Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
-- [ONNX] Default to dynamo export ([#159646](https://github.com/pytorch/pytorch/pull/159646))
-- [ONNX] Drop draft_export in exporter API ([#161454](https://github.com/pytorch/pytorch/pull/161454))
-- [ONNX] Refactor torchscript based exporter ([#161323](https://github.com/pytorch/pytorch/pull/161323))
-- [ONNX] Default to dynamo export ([#159646](https://github.com/pytorch/pytorch/pull/159646))
-- [ONNX] Hide draft export under a flag ([#162225](https://github.com/pytorch/pytorch/pull/162225))
+- Default to dynamo export ([#159646](https://github.com/pytorch/pytorch/pull/159646))
+- Set fallback=False by default ([#162726](https://github.com/pytorch/pytorch/pull/162726))
+
+The ONNX exporter now uses the newer `torch.export.export` pipeline by default (`dynamo=True`). Previously, calling `torch.onnx.export(...)` without arguments used the legacy exporter. This change improves graph fidelity and future-proofs exports, but may surface graph capture errors that were previously masked or handled differently.  
+
+Version 2.8
+
+```python
+# API calls the legacy exporter with dynamo=False
+torch.onnx.export(...)
+```
+
+Version 2.9
+
+```python
+# To preserve the original behavior
+torch.onnx.export(..., dynamo=False)
+
+# Export onnx model through torch.export.export
+torch.onnx.export(...)
+```
+
+Recommendation: first try the new default; only fall back if you hit blocking issues and report them upstream. Long term, fix the root cause instead of relying on fallback or torchscript exporter.
+
+- Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
+
+Opset 20 enables newer operator definitions and better alignment with current PyTorch semantics. If your tooling or downstream runtime only supports opset 18, pin it explicitly.  
+
+
+Version 2.8
+
+```py
+# opset_version=18
+torch.onnx.export(...)
+```
+
+Version 2.9
+
+```py
+# To preserve the original behavior
+torch.onnx.export(..., opset_version=18)
+
+# New: opset_version=20
+torch.onnx.export(...)
+```
+
+- Drop draft_export in exporter API ([#161454](https://github.com/pytorch/pytorch/pull/161454))
+- Hide draft export under a flag ([#162225](https://github.com/pytorch/pytorch/pull/162225))
+
+Clearer behavior and faster failures by removing implicit draft tracing from the default exporter path,
+The expensive `torch.export.draft_export` diagnostic path is no longer auto-invoked (which could take hours on large models). You can still opt in for deep diagnostics:
+
+Version 2.8,
+
+```bash
+# If both torch.export.export(..., strict=False) and 
+# torch.export.export(..., strict=True) fail to capture
+# torch IR, torch.export.draft_export(...) will be triggered,
+# and uses real tensor to trace/export the model.
+# 
+# Inside export_to_onnx.py:
+#  ... torch.onnx.export(..., dynamo=True)
+python export_to_onnx.py
+```
+
+Version 2.9,
+
+```bash
+# To trigger torch.export.draft_export once
+# torch.export.export strcit=True/False both
+# fail:
+
+TORCH_ONNX_ENABLE_DRAFT_EXPORT=True python export_to_onnx.py
+```
+
+- Delete torch.onnx.dynamo_export ([#158130](https://github.com/pytorch/pytorch/pull/158130))
+- Remove legacy Dort ([#158258](https://github.com/pytorch/pytorch/pull/158258))
+
+`torch.onnx.dynamo_export` does not use `torch.export.export` pipeline, and is obsolete. 
+Please use `torch.onnx.export` instead. 
+
+The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`) is no longer supported.  
+
+- Refactor torchscript based exporter ([#161323](https://github.com/pytorch/pytorch/pull/161323))
+
+As torchscript will be removed from PyTorch in near future, we moved it to a isolated/private
+location for better code management.
+
+- Delete symbolic caffe2 ([#157102](https://github.com/pytorch/pytorch/pull/157102))
+
+Caffe2 has already been removed from PyTorch, here we clean up the symbolic functions
+for it.
+
 ### deprecation
 ### new features
 ### improvements
