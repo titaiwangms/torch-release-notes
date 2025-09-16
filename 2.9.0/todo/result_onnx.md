@@ -109,7 +109,6 @@ The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`
 - Refactor torchscript based exporter ([#161323](https://github.com/pytorch/pytorch/pull/161323))
 
 As we move towards the `torch.export` based exporter, some public facing utility APIs for the torchscript based exporter became private.
-isolated/private location for better code management.
 
 - `torch.onnx.symbolic_caffe2` is removed ([#157102](https://github.com/pytorch/pytorch/pull/157102))
 
