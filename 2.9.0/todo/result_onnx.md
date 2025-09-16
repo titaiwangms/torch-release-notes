@@ -103,7 +103,7 @@ TORCH_ONNX_ENABLE_DRAFT_EXPORT=True python export_to_onnx.py
 - Delete torch.onnx.dynamo_export ([#158130](https://github.com/pytorch/pytorch/pull/158130))
 - Remove legacy Dort ([#158258](https://github.com/pytorch/pytorch/pull/158258))
 
-`torch.onnx.dynamo_export` is obsolete. Please use `torch.onnx.export` instead. 
+`torch.onnx.dynamo_export` is removed. Please use `torch.onnx.export` instead. 
 The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`) is no longer supported.  
 
 - Refactor torchscript based exporter ([#161323](https://github.com/pytorch/pytorch/pull/161323))
