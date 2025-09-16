@@ -103,20 +103,15 @@ TORCH_ONNX_ENABLE_DRAFT_EXPORT=True python export_to_onnx.py
 - Delete torch.onnx.dynamo_export ([#158130](https://github.com/pytorch/pytorch/pull/158130))
 - Remove legacy Dort ([#158258](https://github.com/pytorch/pytorch/pull/158258))
 
-`torch.onnx.dynamo_export` does not use `torch.export.export` pipeline, and is obsolete. 
-Please use `torch.onnx.export` instead. 
-
+`torch.onnx.dynamo_export` is obsolete. Please use `torch.onnx.export` instead. 
 The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`) is no longer supported.  
 
 - Refactor torchscript based exporter ([#161323](https://github.com/pytorch/pytorch/pull/161323))
 
-As torchscript will be removed from PyTorch in near future, we moved it to a isolated/private
-location for better code management.
+As moving towards `torch.export` based exporter, we moved torchscript based exporter to a 
+isolated/private location for better code management.
 
 - Delete symbolic caffe2 ([#157102](https://github.com/pytorch/pytorch/pull/157102))
-
-Caffe2 has already been removed from PyTorch, here we clean up the symbolic functions
-for it.
 
 ### deprecation
 ### new features
