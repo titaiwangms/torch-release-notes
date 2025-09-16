@@ -111,7 +111,7 @@ The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`
 As moving towards `torch.export` based exporter, we moved torchscript based exporter to a 
 isolated/private location for better code management.
 
-- Delete symbolic caffe2 ([#157102](https://github.com/pytorch/pytorch/pull/157102))
+- `torch.onnx.symbolic_caffe2` is removed ([#157102](https://github.com/pytorch/pytorch/pull/157102))
 
 ### deprecation
 ### new features
