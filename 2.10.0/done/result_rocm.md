@@ -46,6 +46,8 @@ The categories below are as follows:
 - Remove env var HIPBLASLT_ALLOW_TF32 from codebase, TF32 always allowed ([#162998](https://github.com/pytorch/pytorch/pull/162998))
 - Enable multi-arch compilation and unit tests for AOT Inductor ([#166357](https://github.com/pytorch/pytorch/pull/166357))
 - Fix miopen batchnorm changing output format ([#162112](https://github.com/pytorch/pytorch/pull/162112))
+- [ROCm] Enable multi-arch compilation and unit tests for AOT Inductor ([#166357](https://github.com/pytorch/pytorch/- pull/166357))
+- [ROCm][inductor] autotune support for persistent reduction kernels ([#163908](https://github.com/pytorch/pytorch/- pull/163908))
 ### bug fixes
 - Fix hardsigmoid op ([#162758](https://github.com/pytorch/pytorch/pull/162758))
 - Fix GEMM carveout feature ([#164303](https://github.com/pytorch/pytorch/pull/164303))
@@ -87,4 +89,6 @@ The categories below are as follows:
 - Fix skip condition for PLATFORM_SUPPORTS_SYMM_MEM ([#163205](https://github.com/pytorch/pytorch/pull/163205))
 - Skip AsyncTP test class as AsyncTP is not supported on ROCm ([#166316](https://github.com/pytorch/pytorch/pull/166316))
 - Enable ZerO Optimizer UTs ([#169077](https://github.com/pytorch/pytorch/pull/169077))
+- [ROCm][Inductor][CK backend] Install rocm-composable-kernel python package on ROCm Linux CI docker images ([#162288]- (https://github.com/pytorch/pytorch/pull/162288))
+
 ### security
